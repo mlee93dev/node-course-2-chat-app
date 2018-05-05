@@ -20,6 +20,18 @@ io.on('connection' , (socket) => {
   //   createdAt: '123'
   // });
 
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to Maku\'\s chatroom',
+    createdAt: new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user has joined the chatroom.',
+    createdAt: new Date().getTime()
+  })
+
   socket.on('createMessage', (newMsg) => {
     console.log('createMessage', newMsg);
     io.emit('newMessage', {
@@ -27,6 +39,11 @@ io.on('connection' , (socket) => {
       text: newMsg.text,
       createdAt: new Date().getTime()
     });
+    // socket.broadcast.emit('newMessage', {
+    //   from: newMsg.from,
+    //   text: newMsg.text,
+    //   createdAt: new Date().getTime()
+    // });
   });
 
   socket.on('disconnect', () => {
